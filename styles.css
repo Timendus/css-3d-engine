@@ -46,25 +46,8 @@ html, body {
   background-color: #333;
 }
 
-.texture-wall1 {
-  background-color: rgba(0,255,0,0.8);
-  background-image: url('textures/wall1.jpg');
-}
-
-.texture-wall2 {
-  background-color: rgba(0,0,255,0.8);
-  background-image: url('textures/wall2.jpg');
-}
-
-.texture-wall3 {
-  background-color: rgba(255,0,0,0.8);
-}
-
-.texture-wall4 {
-  background-color: rgba(0,255,255,0.8);
-}
-
-.texture-floor {
-  background-color: rgba(50,50,50,0.5);
-  background-image: url('textures/floor.jpg');
-}
+.texture-wall1 { background-color: rgba(0,255,0,0.8);   background-image: url('textures/wall1.jpg'); }
+.texture-wall2 { background-color: rgba(0,0,255,0.8);   background-image: url('textures/wall2.jpg'); }
+.texture-wall3 { background-color: rgba(255,0,0,0.8);   }
+.texture-wall4 { background-color: rgba(0,255,255,0.8); }
+.texture-floor { background-color: rgba(50,50,50,0.5);  background-image: url('textures/floor.jpg'); }
