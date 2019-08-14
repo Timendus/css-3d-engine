@@ -15,35 +15,35 @@ class World {
         type: 'wall',
         texture: 'floor',
         text: '',
-        position: [0, 150, 0],
+        position: [0, 150, -300],
         rotation: [90, 0, 0]
       },
       {
         type: 'wall',
         texture: 'wall1',
-        text: '',
-        position: [0, 0, -150],
+        text: 'wsad',
+        position: [0, 0, -450],
         rotation: [0, 0, 0]
       },
       {
         type: 'wall',
         texture: 'wall2',
-        text: '',
-        position: [-150, 0, 0],
+        text: '<- / ->',
+        position: [-150, 0, -300],
         rotation: [0, 90, 0]
       },
       {
         type: 'wall',
         texture: 'wall3',
         text: 'Wall 3',
-        position: [150, 0, 0],
+        position: [150, 0, -300],
         rotation: [0, -90, 0]
       },
       {
         type: 'wall',
         texture: 'wall4',
         text: 'Wall 4',
-        position: [0, 0, 150],
+        position: [0, 0, -150],
         rotation: [0, 180, 0]
       }
     ];
