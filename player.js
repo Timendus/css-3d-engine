@@ -22,35 +22,40 @@
 
     /** Main loop velocity updates **/
 
-    update(duration) {
+    update(timePassed) {
+      // We create a bias based on the amount of time that has passed since the
+      // last call. We base how much velocity we add, how far we move, etc on
+      // this bias. The fraction determines how "fast paced" the engine is.
+      let bias = timePassed / 1.4;
+
       const [b, v, a] = [this.buttonsPressed, this.velocity, this.angularVelocity];
 
       // Increase velocities based on pressed keys
-      if ( b.forward     && v[2] < 100  )    v[2] = Math.min(v[2] + duration,  100);
-      if ( b.backward    && v[2] > -100 )    v[2] = Math.max(v[2] - duration, -100);
-      if ( b.strafeLeft  && v[0] > -100 )    v[0] = Math.max(v[0] - duration, -100);
-      if ( b.strafeRight && v[0] < 100  )    v[0] = Math.min(v[0] + duration,  100);
+      if ( b.forward     && v[2] < 100  )    v[2] = Math.min(v[2] + bias,  100);
+      if ( b.backward    && v[2] > -100 )    v[2] = Math.max(v[2] - bias, -100);
+      if ( b.strafeLeft  && v[0] > -100 )    v[0] = Math.max(v[0] - bias, -100);
+      if ( b.strafeRight && v[0] < 100  )    v[0] = Math.min(v[0] + bias,  100);
 
       // Decrease velocities if no keys pressed
-      if ( !b.forward && !b.backward )       v[2] -= v[2] * duration / 100;
-      if ( !b.strafeLeft && !b.strafeRight ) v[0] -= v[0] * duration / 100;
+      if ( !b.forward && !b.backward )       v[2] -= v[2] * bias / 100;
+      if ( !b.strafeLeft && !b.strafeRight ) v[0] -= v[0] * bias / 100;
       if ( Math.abs(v[0]) < 1 )              v[0] = 0;
       if ( Math.abs(v[2]) < 1 )              v[2] = 0;
 
       // Increase angular velocities based on pressed keys
-      if ( b.turnLeft  && a[1] > -100 )      a[1] = Math.max(a[1] - duration, -100);
-      if ( b.turnRight && a[1] < 100  )      a[1] = Math.min(a[1] + duration,  100);
+      if ( b.turnLeft  && a[1] > -100 )      a[1] = Math.max(a[1] - bias, -100);
+      if ( b.turnRight && a[1] < 100  )      a[1] = Math.min(a[1] + bias,  100);
 
       // Decrease angular velocities if no keys pressed
-      if ( !b.turnLeft && !b.turnRight )     a[1] -= a[1] * duration / 100;
+      if ( !b.turnLeft && !b.turnRight )     a[1] -= a[1] * bias / 100;
       if ( Math.abs(a[1]) < 1 )              a[1] = 0;
 
       // Move some distance
-      this._move(v[2]/10);
-      this._strafe(v[0]/10);
+      this._move(v[2] * bias / 100);
+      this._strafe(v[0] * bias / 100);
 
       // Turn some angle
-      this._turn(a[1]/36);
+      this._turn(a[1] * bias / 360);
     }
 
 
