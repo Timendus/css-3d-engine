@@ -12,6 +12,7 @@ html, body {
   overflow: hidden;
 
   /* Sky texture */
+  background-color: rgb(255,255,200);
   background-image: url('textures/sky.png');
   background-size: cover;
 }
