@@ -14,13 +14,13 @@
         strafeRight: false,
         turnLeft: false,
         turnRight: false
-      }
+      };
 
       this._bindEventHandlers();
     }
 
 
-    /** Main loop position updates **/
+    /** Main loop velocity updates **/
 
     update() {
       // TODO: Velocities and moves should be based on real timing, not on how
@@ -37,16 +37,16 @@
       // Decrease velocities if no keys pressed
       if ( !b.forward && !b.backward )       v[2] -= v[2] * 0.1
       if ( !b.strafeLeft && !b.strafeRight ) v[0] -= v[0] * 0.1
-      if ( Math.abs(v[0]) < 1 )                        v[0] = 0;
-      if ( Math.abs(v[2]) < 1 )                        v[2] = 0;
+      if ( Math.abs(v[0]) < 1 )              v[0] = 0;
+      if ( Math.abs(v[2]) < 1 )              v[2] = 0;
 
       // Increase angular velocities based on pressed keys
-      if ( b.turnLeft  && a[1] > -100 ) a[1] -= 10;
-      if ( b.turnRight && a[1] < 100  ) a[1] += 10;
+      if ( b.turnLeft  && a[1] > -100 )      a[1] -= 10;
+      if ( b.turnRight && a[1] < 100  )      a[1] += 10;
 
       // Decrease angular velocities if no keys pressed
-      if ( !b.turnLeft && !b.turnRight ) a[1] -= a[1] * 0.1
-      if ( Math.abs(a[1]) < 1 )                  a[1] = 0;
+      if ( !b.turnLeft && !b.turnRight )     a[1] -= a[1] * 0.1
+      if ( Math.abs(a[1]) < 1 )              a[1] = 0;
 
       // Move some distance
       this._move(v[2]/10);
@@ -55,6 +55,9 @@
       // Turn some angle
       this._turn(a[1]/36);
     }
+
+
+    /** Moving the player **/
 
     _move(distance) {
       this.position[2] += this._cosine(this.orientation[1]) * distance;
