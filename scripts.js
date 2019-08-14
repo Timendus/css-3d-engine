@@ -7,8 +7,12 @@ window.addEventListener('load', () => {
   const cameraElm = document.getElementById("camera");
   const worldElm  = document.getElementById("world");
 
-  function draw() {
-    player.update();
+  let lastTime = null;
+
+  function draw(timestamp) {
+    // Tell the player to update itself based on the amount of time passed
+    player.update(lastTime ? timestamp - lastTime : 0);
+    lastTime = timestamp;
 
     const [ x, y, z ] = player.position;
     const [ a, b, c ] = player.orientation;

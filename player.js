@@ -8,12 +8,12 @@
       this.angularVelocity = [0,0,0];
 
       this.buttonsPressed = {
-        forward: false,
-        backward: false,
-        strafeLeft: false,
+        forward:     false,
+        backward:    false,
+        strafeLeft:  false,
         strafeRight: false,
-        turnLeft: false,
-        turnRight: false
+        turnLeft:    false,
+        turnRight:   false
       };
 
       this._bindEventHandlers();
@@ -22,30 +22,27 @@
 
     /** Main loop velocity updates **/
 
-    update() {
-      // TODO: Velocities and moves should be based on real timing, not on how
-      // often requestAnimationFrame happens to call back to us...
-
+    update(duration) {
       const [b, v, a] = [this.buttonsPressed, this.velocity, this.angularVelocity];
 
       // Increase velocities based on pressed keys
-      if ( b.forward     && v[2] < 100  )    v[2] += 10;
-      if ( b.backward    && v[2] > -100 )    v[2] -= 10;
-      if ( b.strafeLeft  && v[0] > -100 )    v[0] -= 10;
-      if ( b.strafeRight && v[0] < 100  )    v[0] += 10;
+      if ( b.forward     && v[2] < 100  )    v[2] = Math.min(v[2] + duration,  100);
+      if ( b.backward    && v[2] > -100 )    v[2] = Math.max(v[2] - duration, -100);
+      if ( b.strafeLeft  && v[0] > -100 )    v[0] = Math.max(v[0] - duration, -100);
+      if ( b.strafeRight && v[0] < 100  )    v[0] = Math.min(v[0] + duration,  100);
 
       // Decrease velocities if no keys pressed
-      if ( !b.forward && !b.backward )       v[2] -= v[2] * 0.1
-      if ( !b.strafeLeft && !b.strafeRight ) v[0] -= v[0] * 0.1
+      if ( !b.forward && !b.backward )       v[2] -= v[2] * duration / 100;
+      if ( !b.strafeLeft && !b.strafeRight ) v[0] -= v[0] * duration / 100;
       if ( Math.abs(v[0]) < 1 )              v[0] = 0;
       if ( Math.abs(v[2]) < 1 )              v[2] = 0;
 
       // Increase angular velocities based on pressed keys
-      if ( b.turnLeft  && a[1] > -100 )      a[1] -= 10;
-      if ( b.turnRight && a[1] < 100  )      a[1] += 10;
+      if ( b.turnLeft  && a[1] > -100 )      a[1] = Math.max(a[1] - duration, -100);
+      if ( b.turnRight && a[1] < 100  )      a[1] = Math.min(a[1] + duration,  100);
 
       // Decrease angular velocities if no keys pressed
-      if ( !b.turnLeft && !b.turnRight )     a[1] -= a[1] * 0.1
+      if ( !b.turnLeft && !b.turnRight )     a[1] -= a[1] * duration / 100;
       if ( Math.abs(a[1]) < 1 )              a[1] = 0;
 
       // Move some distance
@@ -78,7 +75,7 @@
     }
 
 
-    /** Catch key events **/
+    /** Catching key events **/
 
     _bindEventHandlers() {
       window.addEventListener('keydown', (e) => this._handleKeyDown(e));
