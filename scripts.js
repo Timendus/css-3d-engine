@@ -1,11 +1,12 @@
 window.addEventListener('load', () => {
 
-  const player = new Player();
-  const world  = new World();
-
   const sceneElm  = document.getElementById("scene");
   const cameraElm = document.getElementById("camera");
   const worldElm  = document.getElementById("world");
+
+  const player = new Player();
+  const world  = new World(worldElm);
+  const editor = new Editor(world, player);
 
   let lastTime = null;
 
@@ -31,7 +32,7 @@ window.addEventListener('load', () => {
   }
 
   // Bootstrap!
-  world.render(worldElm);
+  world.render();
   draw();
 
 });

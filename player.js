@@ -20,6 +20,23 @@
     }
 
 
+    /** Put the player in a fixed birds eye view over the level **/
+
+    toggleBirdsEyeView() {
+      if ( this.savedPosition && this.savedOrientation ) {
+        this.position = this.savedPosition;
+        this.orientation = this.savedOrientation;
+        this.savedPosition = null;
+        this.savedOrientation = null;
+      } else {
+        this.savedPosition = this.position;
+        this.savedOrientation = this.orientation;
+        this.position = [0, 2000, 300];
+        this.orientation = [-90, 0, 0];
+      }
+    }
+
+
     /** Main loop velocity updates **/
 
     update(timePassed) {
