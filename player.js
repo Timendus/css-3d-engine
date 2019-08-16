@@ -175,24 +175,15 @@
 
     _handleTouch(e) {
       if ( this.buttonsPressed.touching ) {
-        if ( this.touchPosition[0] < e.touches[0].pageX ) {
-          this.buttonsPressed.turnLeft  = true;
-          this.buttonsPressed.turnRight = false;
-        }
-        if ( this.touchPosition[0] > e.touches[0].pageX ) {
-          this.buttonsPressed.turnRight = true;
-          this.buttonsPressed.turnLeft  = false;
-        }
+        this.orientation[1] += (this.touchPosition[0] - e.touches[0].pageX) / 100;
       } else {
         this.touchPosition = [e.touches[0].pageX, e.touches[0].pageY];
+        this.buttonsPressed.touching = true;
       }
-      this.buttonsPressed.touching = true;
     }
 
     _stopTouch(e) {
       this.buttonsPressed.touching  = false;
-      this.buttonsPressed.turnRight = false;
-      this.buttonsPressed.turnLeft  = false;
     }
 
   }
