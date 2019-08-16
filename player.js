@@ -6,6 +6,7 @@
       this.orientation     = [0,0,0];
       this.velocity        = [0,0,0];
       this.angularVelocity = [0,0,0];
+      this.touchPosition   = [0,0];
 
       this.buttonsPressed = {
         forward:     false,
@@ -13,7 +14,8 @@
         strafeLeft:  false,
         strafeRight: false,
         turnLeft:    false,
-        turnRight:   false
+        turnRight:   false,
+        touching:    false
       };
 
       this._bindEventHandlers();
@@ -97,11 +99,19 @@
     }
 
 
-    /** Catching key events **/
+    /** Catching input events **/
 
     _bindEventHandlers() {
-      window.addEventListener('keydown', (e) => this._handleKeyDown(e));
-      window.addEventListener('keyup',   (e) => this._handleKeyUp(e));
+      // Keyboard navigation
+      window.addEventListener('keydown',           (e) => this._handleKeyDown(e));
+      window.addEventListener('keyup',             (e) => this._handleKeyUp(e));
+
+      // Mobile navigation
+      window.addEventListener('deviceorientation', (e) => this._handleOrientation(e));
+      window.addEventListener('touchstart',        (e) => this._handleTouch(e));
+      window.addEventListener('touchmove',         (e) => this._handleTouch(e));
+      window.addEventListener('touchend',          (e) => this._stopTouch(e));
+      window.addEventListener('touchcancel',       (e) => this._stopTouch(e));
     }
 
     _handleKeyUp(e) {
@@ -154,6 +164,35 @@
           b.turnRight = true;
           break;
       }
+    }
+
+    _handleOrientation(e) {
+      this.buttonsPressed.forward     = e.beta < 40;
+      this.buttonsPressed.backward    = e.beta > 60;
+      this.buttonsPressed.strafeLeft  = e.gamma < -10;
+      this.buttonsPressed.strafeRight = e.gamma > 10;
+    }
+
+    _handleTouch(e) {
+      if ( this.buttonsPressed.touching ) {
+        if ( this.touchPosition[0] < e.touches[0].pageX ) {
+          this.buttonsPressed.turnLeft  = true;
+          this.buttonsPressed.turnRight = false;
+        }
+        if ( this.touchPosition[0] > e.touches[0].pageX ) {
+          this.buttonsPressed.turnRight = true;
+          this.buttonsPressed.turnLeft  = false;
+        }
+      } else {
+        this.touchPosition = [e.touches[0].pageX, e.touches[0].pageY];
+      }
+      this.buttonsPressed.touching = true;
+    }
+
+    _stopTouch(e) {
+      this.buttonsPressed.touching  = false;
+      this.buttonsPressed.turnRight = false;
+      this.buttonsPressed.turnLeft  = false;
     }
 
   }
