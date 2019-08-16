@@ -21,6 +21,8 @@ class Editor {
       if ( !this.currentWall ) return;
 
       switch(e.key) {
+
+        // Moving the wall
         case 'i':
           this.currentWall.position[2] -= 10;
           break;
@@ -34,13 +36,39 @@ class Editor {
           this.currentWall.position[0] += 10;
           break;
         case 'u':
-          this.currentWall.rotation[1] += 10;
+          this.currentWall.rotation[1] += 5;
           break;
         case 'o':
-          this.currentWall.rotation[1] -= 10;
+          this.currentWall.rotation[1] -= 5;
           break;
+
+        // Resizing the wall
+        case 't':
+          this.currentWall.height += 10;
+          this.currentWall.position[1] -= 5;
+          break;
+        case 'g':
+          this.currentWall.height -= 10;
+          this.currentWall.position[1] += 5;
+          break;
+        case 'f':
+          this.currentWall.width += 10;
+          break;
+        case 'h':
+          this.currentWall.width -= 10;
+          break;
+
+        // Cycle through textures
+        case 'm':
+          const texnr = this.currentWall.texture.substr(-1,1);
+          this.currentWall.texture = `wall${texnr % 9 + 1}`;
+          break;
+
+        // Print whole map as JSON to console
         case 'p':
           console.log(JSON.stringify(this.world.json(), null, 2));
+          break;
+
         default:
           return;
       }
@@ -57,20 +85,22 @@ class Editor {
   }
 
   _handleClick(e) {
+    if ( this.currentWall ) {
+      this.currentWall.highlight = false;
+      this.currentWall = null;
+      this.world.render();
+    }
+
     const id = e.target.getAttribute('data-wall');
     if ( !id ) return;
 
     const wall = this.world.getWall(id);
     if ( !wall ) return;
 
-    if ( this.currentWall ) {
-      this.currentWall.highlight = false;
-    }
     this.currentWall = wall;
     wall.highlight = true;
 
     this.world.render();
-    console.log(wall);
   }
 
 }
